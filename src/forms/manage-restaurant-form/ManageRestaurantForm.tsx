@@ -34,10 +34,10 @@ const formSchema = z.object({
   menuItems: z.array(
     z.object({
       name: z.string().min(1, {
-        message: "Menu item name is required",
+        message: "Name is required",
       }),
       price: z.coerce.number().min(1, {
-        message: "Menu item price is required",
+        message: "Price is required",
       }),
     })
   ),
@@ -46,7 +46,7 @@ const formSchema = z.object({
   }),
 });
 
-export type restaurantFormData = z.infer<typeof formSchema>;
+export type RestaurantFormData = z.infer<typeof formSchema>;
 
 type ManageRestaurantFormProps = {
   onSave: (restaurantFormData: FormData) => void;
@@ -57,7 +57,7 @@ const ManageRestaurantForm = ({
   onSave,
   isLoading,
 }: ManageRestaurantFormProps) => {
-  const form = useForm<restaurantFormData>({
+  const form = useForm<RestaurantFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       cuisines: [],
@@ -65,8 +65,31 @@ const ManageRestaurantForm = ({
     },
   });
 
-  const onSubmit = (formDataJson: restaurantFormData) => {
-    console.log(formDataJson);
+  const onSubmit = (formDataJson: RestaurantFormData) => {
+    const formData = new FormData();
+    formData.append("restaurantName", formDataJson.restaurantName);
+    formData.append("city", formDataJson.city);
+    formData.append("country", formDataJson.country);
+    formData.append(
+      "deliveryPrice",
+      (formDataJson.deliveryPrice * 100).toString()
+    );
+    formData.append(
+      "estimatedDeliveryTime",
+      formDataJson.estimatedDeliveryTime.toString()
+    );
+    formData.forEach((cuisine, index) => {
+      formData.append(`cuisines[${index}]`, cuisine);
+    });
+    formData.append("imageUrl", formDataJson.imageUrl);
+    formDataJson.menuItems.forEach((menuItem, index) => {
+      formData.append(`menuItems[${index}][name]`, menuItem.name);
+      formData.append(
+        `menuItems[${index}][price]`,
+        (menuItem.price * 100).toString()
+      );
+    });
+    onSave(formData);
   };
 
   return (
