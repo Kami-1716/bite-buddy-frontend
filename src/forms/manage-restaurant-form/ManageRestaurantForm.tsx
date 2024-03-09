@@ -5,6 +5,10 @@ import { z } from "zod";
 import DetailSection from "./DetailSection";
 import { Separator } from "@/components/ui/separator";
 import CuisinesSection from "./CuisinesSection";
+import MenuSection from "./MenuSection";
+import ImageSection from "./ImageSection";
+import LoadingButton from "@/components/LoadingButton";
+import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
   restaurantName: z.string({
@@ -49,9 +53,10 @@ type ManageRestaurantFormProps = {
   isLoading: boolean;
 };
 
-const ManageRestaurantForm = ({}: // onSave,
-// isLoading,
-ManageRestaurantFormProps) => {
+const ManageRestaurantForm = ({
+  onSave,
+  isLoading,
+}: ManageRestaurantFormProps) => {
   const form = useForm<restaurantFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -73,6 +78,17 @@ ManageRestaurantFormProps) => {
         <DetailSection />
         <Separator />
         <CuisinesSection />
+        <Separator />
+        <MenuSection />
+        <Separator />
+        <ImageSection />
+        {isLoading ? (
+          <LoadingButton />
+        ) : (
+          <Button type="submit" className="w-full">
+            Submit
+          </Button>
+        )}
       </form>
     </Form>
   );
