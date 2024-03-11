@@ -9,12 +9,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { useFormContext } from "react-hook-form";
 
-type MenuItemInputProps = {
+type Props = {
   index: number;
   removeMenuItem: () => void;
 };
 
-const MenuItemInput = ({ index, removeMenuItem }: MenuItemInputProps) => {
+const MenuItemInput = ({ index, removeMenuItem }: Props) => {
   const { control } = useFormContext();
   return (
     <div className="flex flex-row items-end gap-2">
@@ -23,32 +23,39 @@ const MenuItemInput = ({ index, removeMenuItem }: MenuItemInputProps) => {
         name={`menuItems.${index}.name`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>
-              Name
-              <FormMessage />
+            <FormLabel className="flex items-end gap-1">
+              Name <FormMessage />
             </FormLabel>
             <FormControl>
-              <Input {...field} className="bg-white" placeholder="Burger" />
+              <Input
+                {...field}
+                className="bg-white"
+                placeholder="Zinger Burger"
+              />
             </FormControl>
           </FormItem>
         )}
       />
+
       <FormField
         control={control}
         name={`menuItems.${index}.price`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>
-              Price ($)
-              <FormMessage />
+            <FormLabel className="flex items-center gap-1">
+              Price ($) <FormMessage />
             </FormLabel>
             <FormControl>
-              <Input {...field} className="bg-white" placeholder="Burger" />
+              <Input {...field} className="bg-white" placeholder="28.00" />
             </FormControl>
           </FormItem>
         )}
       />
-      <Button variant="destructive" type="button" onClick={removeMenuItem}>
+      <Button
+        onClick={removeMenuItem}
+        type="button"
+        className="bg-red-500 max-h-fit"
+      >
         Remove
       </Button>
     </div>

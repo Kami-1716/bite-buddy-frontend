@@ -5,26 +5,25 @@ import { Button } from "@/components/ui/button";
 
 const MenuSection = () => {
   const { control } = useFormContext();
-  const { fields, append, remove } = useFieldArray({
+  const { remove, append, fields } = useFieldArray({
     control,
-    name: "menuItems",
+    name: "menuItem",
   });
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       <div>
-        <h2 className="text-2xl font-bold">Menu</h2>
+        <h2 className="text-2xl font-bold">Menu Items</h2>
         <FormDescription>
-          Add the menu items that your restaurant offers
+          Add the menu items for your restaurant
         </FormDescription>
       </div>
       <FormField
         control={control}
         name="menuItems"
         render={() => (
-          <FormItem className="flex flex-col gap-2">
+          <FormItem className="flex flex-col gap-3">
             {fields.map((_, index) => (
               <MenuItemInput
-                key={index}
                 index={index}
                 removeMenuItem={() => remove(index)}
               />
@@ -32,8 +31,16 @@ const MenuSection = () => {
           </FormItem>
         )}
       />
-      <Button type="button" onClick={() => append({ name: "", price: 0 })}>
-        Add Menu Item
+      <Button
+        onClick={() =>
+          append({
+            name: "",
+            price: 0,
+          })
+        }
+        type="button"
+      >
+        Add Item
       </Button>
     </div>
   );

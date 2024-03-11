@@ -14,28 +14,22 @@ const CuisinesSection = () => {
     <div className="space-y-2">
       <div>
         <h2 className="text-2xl font-bold">Cuisines</h2>
-        <FormDescription>
-          Select the cuisines that your restaurant offers
-        </FormDescription>
+        <FormDescription>Select at least one cuisine type</FormDescription>
       </div>
       <FormField
         control={control}
         name="cuisines"
         render={({ field }) => (
           <FormItem>
-            <div className="grid sm:grid-cols-2 md:grid-cols-5 gap-1">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-1">
               {cuisineList.map((cuisine) => (
-                <CuisineCheckbox
-                  key={cuisine}
-                  cuisine={cuisine}
-                  field={field}
-                />
+                <CuisineCheckbox cuisine={cuisine} field={field} />
               ))}
             </div>
-            <FormMessage />
           </FormItem>
         )}
       />
+      <FormMessage />
     </div>
   );
 };

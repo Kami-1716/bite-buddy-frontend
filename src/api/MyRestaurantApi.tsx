@@ -9,7 +9,7 @@ export const useCreateMyRestaurant = () => {
   const { getAccessTokenSilently } = useAuth0();
 
   const createMyRestaurantRequest = async (
-    formData: FormData
+    restaurantFormData: FormData
   ): Promise<MyRestaurant> => {
     const accessToken = await getAccessTokenSilently();
     const response = await fetch(`${API_BASE_URL}/api/v1/restaurant`, {
@@ -17,12 +17,12 @@ export const useCreateMyRestaurant = () => {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-      body: formData,
+      body: restaurantFormData,
     });
-
     if (!response.ok) {
-      throw new Error("Failed to create restaurant");
+      throw new Error("Error while creating the restaurant");
     }
+
     return response.json();
   };
 
@@ -33,12 +33,12 @@ export const useCreateMyRestaurant = () => {
     isSuccess,
   } = useMutation(createMyRestaurantRequest);
 
+  if (error) {
+    toast.error("Error while creating the restaurant");
+    console.log(error);
+  }
   if (isSuccess) {
     toast.success("Restaurant created successfully");
-  }
-  if (error) {
-    toast.error("Failed to create restaurant");
-    console.error(error);
   }
 
   return { createRestaurant, isLoading };

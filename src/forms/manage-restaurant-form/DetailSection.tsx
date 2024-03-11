@@ -14,18 +14,16 @@ const DetailSection = () => {
   return (
     <div className="space-y-2">
       <div>
-        <h2 className="text-2xl font-bold">Details</h2>
-        <FormDescription>
-          Add details about your restaurant, such as delivery price, estimated
-          delivery time, and cuisines.
-        </FormDescription>
+        <h2 className="text-2xl font-bold">Restaurant Details</h2>
+        <FormDescription>Enter your restaurant details</FormDescription>
       </div>
+
       <FormField
         control={control}
         name="restaurantName"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Name</FormLabel>
+            <FormLabel>Restaurant Name</FormLabel>
             <FormControl>
               <Input {...field} className="bg-white" />
             </FormControl>
@@ -33,8 +31,7 @@ const DetailSection = () => {
           </FormItem>
         )}
       />
-
-      <div className="flex gap-4">
+      <div className="flex flex-row gap-4">
         <FormField
           control={control}
           name="city"
@@ -44,7 +41,7 @@ const DetailSection = () => {
               <FormControl>
                 <Input {...field} className="bg-white" />
               </FormControl>
-              <FormControl />
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -66,10 +63,10 @@ const DetailSection = () => {
         control={control}
         name="deliveryPrice"
         render={({ field }) => (
-          <FormItem className="max-w-[25%]">
-            <FormLabel>DeliveryPrice ($)</FormLabel>
+          <FormItem className="w-full md:max-w-[25%]">
+            <FormLabel>Delivery Price ($)</FormLabel>
             <FormControl>
-              <Input {...field} className="bg-white" placeholder="1.88" />
+              <Input {...field} className="bg-white" placeholder="20" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -79,10 +76,10 @@ const DetailSection = () => {
         control={control}
         name="estimatedDeliveryTime"
         render={({ field }) => (
-          <FormItem className="max-w-[25%]">
-            <FormLabel>EstimatedDeliveryTime (minutes)</FormLabel>
+          <FormItem className="w-full md:max-w-[25%]">
+            <FormLabel>Estimated Delivery Time (min)</FormLabel>
             <FormControl>
-              <Input {...field} className="bg-white" placeholder="20" />
+              <Input {...field} className="bg-white" placeholder="8.35" />
             </FormControl>
             <FormMessage />
           </FormItem>

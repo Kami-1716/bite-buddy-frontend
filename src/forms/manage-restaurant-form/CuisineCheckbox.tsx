@@ -2,29 +2,28 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { FormControl, FormItem, FormLabel } from "@/components/ui/form";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 
-type CuisineCheckboxProps = {
+type Props = {
   cuisine: string;
   field: ControllerRenderProps<FieldValues, "cuisines">;
 };
-const CuisineCheckbox = ({ cuisine, field }: CuisineCheckboxProps) => {
+
+const CuisineCheckbox = ({ cuisine, field }: Props) => {
   return (
-    <FormItem className="flex flex-row items-center space-x-1 space-y-0 mt-2">
+    <FormItem className="flex items-center flex-row space-x-1 space-y-0 mt-2">
       <FormControl>
         <Checkbox
-          className="bg-white"
           checked={field.value.includes(cuisine)}
+          className="bg-white"
           onCheckedChange={(checked) => {
             if (checked) {
               field.onChange([...field.value, cuisine]);
             } else {
-              field.onChange(
-                field.value.filter((value: string) => value !== cuisine)
-              );
+              field.onChange(field.value.filter((c: string) => c !== cuisine));
             }
           }}
         />
       </FormControl>
-      <FormLabel>{cuisine}</FormLabel>
+      <FormLabel className="text-sm font-normal">{cuisine}</FormLabel>
     </FormItem>
   );
 };

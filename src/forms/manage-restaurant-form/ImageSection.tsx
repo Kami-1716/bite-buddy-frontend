@@ -15,12 +15,12 @@ const ImageSection = () => {
       <div>
         <h2 className="text-2xl font-bold">Image</h2>
         <FormDescription>
-          Please upload an image of the restaurant that will be displayed on
-          your restaurant listing on search. Adding new image will replace the
-          existing image.
+          Add an image that will be displayed on your restaurant listing in the
+          search results. Adding a new image will overwrite the existing one.
         </FormDescription>
       </div>
-      <div className="flex flex-col gap-8 w-[50%]">
+
+      <div className="flex flex-col gap-8 md:w-[50%]">
         <FormField
           control={control}
           name="imageUrl"
