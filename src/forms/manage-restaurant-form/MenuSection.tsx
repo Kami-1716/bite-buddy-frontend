@@ -1,27 +1,29 @@
+import { Button } from "@/components/ui/button";
 import { FormDescription, FormField, FormItem } from "@/components/ui/form";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import MenuItemInput from "./MenuItemInput";
-import { Button } from "@/components/ui/button";
 
 const MenuSection = () => {
   const { control } = useFormContext();
-  const { remove, append, fields } = useFieldArray({
+
+  const { fields, append, remove } = useFieldArray({
     control,
-    name: "menuItem",
+    name: "menuItems",
   });
+
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       <div>
-        <h2 className="text-2xl font-bold">Menu Items</h2>
+        <h2 className="text-2xl font-bold">Menu</h2>
         <FormDescription>
-          Add the menu items for your restaurant
+          Create your menu and give each item a name and a price
         </FormDescription>
       </div>
       <FormField
         control={control}
         name="menuItems"
         render={() => (
-          <FormItem className="flex flex-col gap-3">
+          <FormItem className="flex flex-col gap-2">
             {fields.map((_, index) => (
               <MenuItemInput
                 index={index}
@@ -31,16 +33,8 @@ const MenuSection = () => {
           </FormItem>
         )}
       />
-      <Button
-        onClick={() =>
-          append({
-            name: "",
-            price: 0,
-          })
-        }
-        type="button"
-      >
-        Add Item
+      <Button type="button" onClick={() => append({ name: "", price: "" })}>
+        Add Menu Item
       </Button>
     </div>
   );

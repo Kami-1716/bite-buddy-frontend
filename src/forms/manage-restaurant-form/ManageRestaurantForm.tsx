@@ -9,6 +9,8 @@ import MenuSection from "./MenuSection";
 import ImageSection from "./ImageSection";
 import LoadingButton from "@/components/LoadingButton";
 import { Button } from "@/components/ui/button";
+import { MyRestaurant } from "@/types";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   restaurantName: z.string({
@@ -43,11 +45,12 @@ const formSchema = z.object({
 type restaurantFormData = z.infer<typeof formSchema>;
 
 type Props = {
+  myRestaurant?: MyRestaurant;
   onSave: (restaurantFormData: FormData) => void;
   isLoading: boolean;
 };
 
-const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
+const ManageRestaurantForm = ({ onSave, isLoading, myRestaurant }: Props) => {
   const form = useForm<restaurantFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,6 +58,30 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
       menuItems: [{ name: "", price: 0 }],
     },
   });
+
+  useEffect(() => {
+    if (!myRestaurant) return;
+    console.log(myRestaurant);
+    const formattedDeliveryPrice = parseInt(
+      (myRestaurant.deliveryPrice / 100).toFixed(2)
+    );
+    const formattedMenuItems = myRestaurant.menuItems.map((menuItem) => {
+      return {
+        name: menuItem.name,
+        price: parseInt((menuItem.price / 100).toFixed(2)),
+      };
+    });
+
+    form.reset({
+      restaurantName: myRestaurant.restaurantName,
+      city: myRestaurant.city,
+      country: myRestaurant.country,
+      deliveryPrice: formattedDeliveryPrice,
+      estimatedDeliveryTime: myRestaurant.estimatedDeliveryTime,
+      cuisines: myRestaurant.cuisines,
+      menuItems: formattedMenuItems,
+    });
+  }, [form, myRestaurant]);
 
   const onSubmit = (restaurantDataJson: restaurantFormData) => {
     const formData = new FormData();
