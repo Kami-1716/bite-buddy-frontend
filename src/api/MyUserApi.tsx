@@ -104,6 +104,8 @@ const useGetCurrentUser = () => {
 
   if (error) {
     toast.error(error.toString());
+    console.log(error);
+    console.log(error.toString());
   }
 
   return { currentUser, isLoading };

@@ -39,7 +39,7 @@ const formSchema = z.object({
       price: z.coerce.number().min(1, "price is required"),
     })
   ),
-  imageUrl: z.instanceof(File, { message: "image is required" }),
+  imageFile: z.instanceof(File, { message: "image is required" }),
 });
 
 type restaurantFormData = z.infer<typeof formSchema>;
@@ -73,12 +73,8 @@ const ManageRestaurantForm = ({ onSave, isLoading, myRestaurant }: Props) => {
     });
 
     form.reset({
-      restaurantName: myRestaurant.restaurantName,
-      city: myRestaurant.city,
-      country: myRestaurant.country,
+      ...myRestaurant,
       deliveryPrice: formattedDeliveryPrice,
-      estimatedDeliveryTime: myRestaurant.estimatedDeliveryTime,
-      cuisines: myRestaurant.cuisines,
       menuItems: formattedMenuItems,
     });
   }, [form, myRestaurant]);
@@ -106,8 +102,7 @@ const ManageRestaurantForm = ({ onSave, isLoading, myRestaurant }: Props) => {
         (menuItem.price * 100).toString()
       );
     });
-    formData.append("imageUrl", restaurantDataJson.imageUrl);
-
+    formData.append("imageFile", restaurantDataJson.imageFile);
     onSave(formData);
   };
   return (

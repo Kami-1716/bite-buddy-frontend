@@ -28,6 +28,8 @@ export const useGetMyRestaurant = () => {
     getMyRestaurantRequest
   );
 
+  console.log(myRestaurant);
+
   return { myRestaurant, isLoading };
 };
 
