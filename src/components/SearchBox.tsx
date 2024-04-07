@@ -5,22 +5,35 @@ import { Form, FormControl, FormField, FormItem } from "./ui/form";
 import { Search } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { useEffect } from "react";
 
 const searchFormSchema = z.object({
   searchTerm: z.string().nonempty("Search term cannot be empty"),
 });
+
 type SearchBoxProps = {
   onSubmit: (formData: SearchForm) => void;
   placeholder: string;
   onReset?: () => void;
+  searchTerm: string;
 };
 
 export type SearchForm = z.infer<typeof searchFormSchema>;
 
-const SearchBox = ({ onSubmit, placeholder, onReset }: SearchBoxProps) => {
+const SearchBox = ({
+  onSubmit,
+  placeholder,
+  onReset,
+  searchTerm,
+}: SearchBoxProps) => {
   const form = useForm<SearchForm>({
     resolver: zodResolver(searchFormSchema),
+    defaultValues: { searchTerm },
   });
+
+  useEffect(() => {
+    form.reset({ searchTerm });
+  }, [form, searchTerm]);
 
   const handleReset = () => {
     form.reset({
@@ -58,16 +71,14 @@ const SearchBox = ({ onSubmit, placeholder, onReset }: SearchBoxProps) => {
             </FormItem>
           )}
         />
-        {form.formState.isDirty && (
-          <Button
-            variant="outline"
-            type="button"
-            className="rounded-full"
-            onClick={handleReset}
-          >
-            Clear
-          </Button>
-        )}
+        <Button
+          variant="outline"
+          type="button"
+          className="rounded-full"
+          onClick={handleReset}
+        >
+          Clear
+        </Button>
         <Button size="lg" type="submit" className="rounded-full bg-orange-500">
           <span className="hidden md:block">Search</span>
           <Search strokeWidth={2.5} size={20} className="md:hidden" />
