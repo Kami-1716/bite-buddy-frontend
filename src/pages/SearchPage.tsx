@@ -1,4 +1,5 @@
 import { useSearchRestaurants } from "@/api/RearaurantSearchApi";
+import CuisineFilter from "@/components/CuisineFilter";
 import PaginationSelector from "@/components/PaginationSelector";
 import SearchBox, { SearchForm } from "@/components/SearchBox";
 import SearchResultsCard from "@/components/SearchResultsCard";
@@ -9,6 +10,7 @@ import { useParams } from "react-router-dom";
 export type SearchState = {
   searchTerm: string;
   page: number;
+  selectedCuisines: string[];
 };
 
 const SearchPage = () => {
@@ -16,8 +18,17 @@ const SearchPage = () => {
   const [SearchState, setSearchState] = useState<SearchState>({
     searchTerm: "",
     page: 1,
+    selectedCuisines: [],
   });
   const { restaurants, isLoading } = useSearchRestaurants(SearchState, city);
+
+  const setSelectedCuisines = (selectedCuisines: string[]) => {
+    setSearchState((prevState) => ({
+      ...prevState,
+      selectedCuisines,
+      page: 1,
+    }));
+  };
 
   const setPage = (page: number) => {
     setSearchState((prevState) => ({
@@ -58,7 +69,13 @@ const SearchPage = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5">
-      <div id="cuisines-list">{/* insert cuisines here */}</div>
+      <div id="cuisines-list">
+        {/* insert cuisines here */}
+        <CuisineFilter
+          onChange={setSelectedCuisines}
+          selectedCuisines={SearchState.selectedCuisines}
+        />
+      </div>
       <div id="main-content" className="flex flex-col gap-5">
         <SearchBox
           onSubmit={setSearchTerm}
