@@ -3,7 +3,6 @@ import MenuItemCard from "@/components/MenuItemCard";
 import OrderSummary from "@/components/OrderSummary";
 import RestaurantInfo from "@/components/RestaurantInfo";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Card } from "@/components/ui/card";
 import { MenuItem } from "@/types";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -46,6 +45,11 @@ const DetailPage = () => {
     }
   };
 
+  const removeFromCart = (id: string) => {
+    const newCartItems = cartItems.filter((item) => item._id !== id);
+    setCartItems(newCartItems);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center text-xl font-bold">
@@ -75,15 +79,21 @@ const DetailPage = () => {
         <div className="flex flex-col gap-4">
           <RestaurantInfo restaurant={restaurantById} />
           <span className="text-2xl font-bold tracking-tight">Menu</span>
-          {restaurantById.menuItems?.map((menuItems) => (
+          {restaurantById.menuItems?.map((menuItem) => (
             <MenuItemCard
-              menuItem={menuItems}
-              addToCart={() => addToCart(menuItems)}
+              menuItem={menuItem}
+              addToCart={() => addToCart(menuItem)}
             />
           ))}
         </div>
         <div>
-          <OrderSummary restaurant={restaurantById} cartItems={cartItems} />
+          <OrderSummary
+            restaurant={restaurantById}
+            cartItems={cartItems}
+            removeFromCart={(cartItem: CartItems) =>
+              removeFromCart(cartItem._id)
+            }
+          />
         </div>
       </div>
     </div>

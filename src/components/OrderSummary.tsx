@@ -3,13 +3,19 @@ import { MyRestaurant } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Separator } from "./ui/separator";
+import { Trash } from "lucide-react";
 
 export type OrderSummaryState = {
   cartItems: CartItems[];
   restaurant: MyRestaurant;
+  removeFromCart: (cartItem: CartItems) => void;
 };
 
-const OrderSummary = ({ restaurant, cartItems }: OrderSummaryState) => {
+const OrderSummary = ({
+  restaurant,
+  cartItems,
+  removeFromCart,
+}: OrderSummaryState) => {
   const getTotalCost = () => {
     const totalInCents = cartItems.reduce((acc, item) => {
       return acc + item.price * item.quantity;
@@ -17,6 +23,7 @@ const OrderSummary = ({ restaurant, cartItems }: OrderSummaryState) => {
 
     return ((totalInCents + restaurant.deliveryPrice) / 100).toFixed(2);
   };
+
   return (
     <>
       <Card>
@@ -36,6 +43,12 @@ const OrderSummary = ({ restaurant, cartItems }: OrderSummaryState) => {
                 {cartItem.name}
               </span>
               <span className="flex items-center gap-1">
+                <Trash
+                  color="red"
+                  size="20"
+                  className="cursor-pointer"
+                  onClick={() => removeFromCart(cartItem)}
+                />
                 ${((cartItem.price * cartItem.quantity) / 100).toFixed(2)}
               </span>
             </div>
