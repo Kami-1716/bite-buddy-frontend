@@ -7,7 +7,7 @@ export type MyUser = {
   city: string;
 };
 
-type MenuItem = {
+export type MenuItem = {
   _id: string;
   name: string;
   price: number;

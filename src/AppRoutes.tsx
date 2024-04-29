@@ -6,6 +6,7 @@ import UserProfilePage from "./pages/UserProfilePage";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import ManageRestaurantPage from "./pages/ManageRestaurantPage";
 import SearchPage from "./pages/SearchPage";
+import DetailPage from "./pages/DetailPage";
 
 const AppRoutes = () => {
   return (
@@ -36,12 +37,21 @@ const AppRoutes = () => {
             </Layout>
           }
         />
+        <Route
+          path="/manage-restaurant"
+          element={
+            <Layout>
+              <ManageRestaurantPage />
+            </Layout>
+          }
+        />
       </Route>
+
       <Route
-        path="/manage-restaurant"
+        path="/detail/:restaurantId"
         element={
           <Layout>
-            <ManageRestaurantPage />
+            <DetailPage />
           </Layout>
         }
       />
