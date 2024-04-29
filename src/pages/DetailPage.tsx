@@ -1,12 +1,50 @@
 import { useGetRestaurantById } from "@/api/RearaurantSearchApi";
 import MenuItemCard from "@/components/MenuItemCard";
+import OrderSummary from "@/components/OrderSummary";
 import RestaurantInfo from "@/components/RestaurantInfo";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Card } from "@/components/ui/card";
+import { MenuItem } from "@/types";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
+
+export type CartItems = {
+  _id: string;
+  name: string;
+  quantity: number;
+  price: number;
+};
 
 const DetailPage = () => {
   const { restaurantId } = useParams();
   const { restaurantById, isLoading } = useGetRestaurantById(restaurantId);
+
+  const [cartItems, setCartItems] = useState<CartItems[]>([]);
+
+  // add to cart function
+  const addToCart = (menuItem: MenuItem) => {
+    const existingItem = cartItems.find((item) => item._id === menuItem._id);
+
+    if (existingItem) {
+      setCartItems(
+        cartItems.map((item) =>
+          item._id === menuItem._id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        )
+      );
+    } else {
+      setCartItems([
+        ...cartItems,
+        {
+          _id: menuItem._id,
+          name: menuItem.name,
+          quantity: 1,
+          price: menuItem.price,
+        },
+      ]);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -38,8 +76,14 @@ const DetailPage = () => {
           <RestaurantInfo restaurant={restaurantById} />
           <span className="text-2xl font-bold tracking-tight">Menu</span>
           {restaurantById.menuItems?.map((menuItems) => (
-            <MenuItemCard menuItem={menuItems} />
+            <MenuItemCard
+              menuItem={menuItems}
+              addToCart={() => addToCart(menuItems)}
+            />
           ))}
+        </div>
+        <div>
+          <OrderSummary restaurant={restaurantById} cartItems={cartItems} />
         </div>
       </div>
     </div>
