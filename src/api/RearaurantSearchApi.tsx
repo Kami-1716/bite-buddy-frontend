@@ -13,6 +13,7 @@ export const useSearchRestaurants = (
     params.set("searchTerm", searchState.searchTerm);
     params.set("page", searchState.page.toString());
     params.set("selectedCuisines", searchState.selectedCuisines.join(","));
+    params.set("sortOptions", searchState.sortOption);
     const response = await fetch(
       `${API_BASE_URL}/api/v1/restaurants/search/${city}?${params.toString()}`,
       {

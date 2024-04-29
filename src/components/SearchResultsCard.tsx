@@ -41,7 +41,7 @@ const SearchResultsCard = ({ restaurant }: SearchResultsCardProps) => {
             </div>
             <div className="flex items-center gap-1">
               <Banknote size={20} />
-              Delivery Form ${(restaurant.deliveryPrice / 100).toFixed(2)}
+              Delivery From ${(restaurant.deliveryPrice / 100).toFixed(2)}
             </div>
           </div>
         </div>
