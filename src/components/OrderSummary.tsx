@@ -1,9 +1,17 @@
 import { CartItems } from "@/pages/DetailPage";
 import { MyRestaurant } from "@/types";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Separator } from "./ui/separator";
 import { Trash } from "lucide-react";
+import CheckoutButton from "./CheckoutButton";
+import { UserFormData } from "@/forms/user-profile-form/UserProfileForm";
 
 export type OrderSummaryState = {
   cartItems: CartItems[];
@@ -22,6 +30,10 @@ const OrderSummary = ({
     }, 0);
 
     return ((totalInCents + restaurant.deliveryPrice) / 100).toFixed(2);
+  };
+
+  const onCheckout = (userFormData: UserFormData) => {
+    console.log("Checkout", userFormData);
   };
 
   return (
@@ -59,6 +71,12 @@ const OrderSummary = ({
             <span>${(restaurant.deliveryPrice / 100).toFixed(2)}</span>
           </div>
           <Separator />
+          <CardFooter className="flex px-0">
+            <CheckoutButton
+              disabled={cartItems.length === 0}
+              onCheckout={onCheckout}
+            />
+          </CardFooter>
         </CardContent>
       </Card>
     </>

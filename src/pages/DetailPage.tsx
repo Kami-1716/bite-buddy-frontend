@@ -18,22 +18,25 @@ const DetailPage = () => {
   const { restaurantId } = useParams();
   const { restaurantById, isLoading } = useGetRestaurantById(restaurantId);
 
-  const [cartItems, setCartItems] = useState<CartItems[]>([]);
+  const [cartItems, setCartItems] = useState<CartItems[]>(() => {
+    const items = sessionStorage.getItem(`cartItems-${restaurantId}`);
+    return items ? JSON.parse(items) : [];
+  });
 
   // add to cart function
   const addToCart = (menuItem: MenuItem) => {
     const existingItem = cartItems.find((item) => item._id === menuItem._id);
 
+    let newCartItems;
+
     if (existingItem) {
-      setCartItems(
-        cartItems.map((item) =>
-          item._id === menuItem._id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        )
+      newCartItems = cartItems.map((item) =>
+        item._id === menuItem._id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
       );
     } else {
-      setCartItems([
+      newCartItems = [
         ...cartItems,
         {
           _id: menuItem._id,
@@ -41,13 +44,23 @@ const DetailPage = () => {
           quantity: 1,
           price: menuItem.price,
         },
-      ]);
+      ];
     }
+
+    setCartItems(newCartItems);
+    sessionStorage.setItem(
+      `cartItems-${restaurantId}`,
+      JSON.stringify(newCartItems)
+    );
   };
 
   const removeFromCart = (id: string) => {
     const newCartItems = cartItems.filter((item) => item._id !== id);
     setCartItems(newCartItems);
+    sessionStorage.setItem(
+      `cartItems-${restaurantId}`,
+      JSON.stringify(newCartItems)
+    );
   };
 
   if (isLoading) {

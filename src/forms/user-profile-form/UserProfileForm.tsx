@@ -29,9 +29,17 @@ export type Prop = {
   onSave: (userProfileData: UserFormData) => void;
   isLoading: boolean;
   user: UserFormData;
+  title?: string;
+  buttonText?: string;
 };
 
-const UserProfileForm = ({ onSave, isLoading, user }: Prop) => {
+const UserProfileForm = ({
+  onSave,
+  isLoading,
+  user,
+  title = "User Profile",
+  buttonText = "Submit",
+}: Prop) => {
   const form = useForm<UserFormData>({
     resolver: zodResolver(UserProfileFormSchema),
     defaultValues: user,
@@ -48,7 +56,7 @@ const UserProfileForm = ({ onSave, isLoading, user }: Prop) => {
         className="space-y-4 bg-gray-50 p-6 rounded-lg md:p-10"
       >
         <div>
-          <h2 className="text-2xl font-bold">User Profile Form</h2>
+          <h2 className="text-2xl font-bold">{title}</h2>
           <FormDescription>
             View and edit your user profile information
           </FormDescription>
@@ -74,7 +82,7 @@ const UserProfileForm = ({ onSave, isLoading, user }: Prop) => {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} className="bg-white" />
               </FormControl>
               <FormMessage>{form.formState.errors.name?.message}</FormMessage>
             </FormItem>
@@ -89,7 +97,7 @@ const UserProfileForm = ({ onSave, isLoading, user }: Prop) => {
               <FormItem className="flex-1">
                 <FormLabel>Address Line 1</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} className="bg-white" />
                 </FormControl>
                 <FormMessage>
                   {form.formState.errors.addressLine1?.message}
@@ -104,7 +112,7 @@ const UserProfileForm = ({ onSave, isLoading, user }: Prop) => {
               <FormItem className="flex-1">
                 <FormLabel>Country</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} className="bg-white" />
                 </FormControl>
                 <FormMessage>
                   {form.formState.errors.country?.message}
@@ -119,7 +127,7 @@ const UserProfileForm = ({ onSave, isLoading, user }: Prop) => {
               <FormItem className="flex-1">
                 <FormLabel>City</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} className="bg-white" />
                 </FormControl>
                 <FormMessage>{form.formState.errors.city?.message}</FormMessage>
               </FormItem>
@@ -130,7 +138,7 @@ const UserProfileForm = ({ onSave, isLoading, user }: Prop) => {
           <LoadingButton />
         ) : (
           <Button type="submit" className="bg-orange-500 w-full">
-            Submit
+            {buttonText}
           </Button>
         )}
       </form>
